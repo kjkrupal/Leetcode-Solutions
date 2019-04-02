@@ -1,4 +1,7 @@
 class Solution {
+    
+    Map <Character, Integer> mapb = new HashMap<>();
+    
     public String minWindow(String S, String T) {
         
         
@@ -8,6 +11,8 @@ class Solution {
         if(s.length < t.length) {
             return "";
         }
+        
+        populate(t);
         
         int left = 0;
         int right = 0;
@@ -23,7 +28,6 @@ class Solution {
             
             if(check) {
                 int len = right - left + 1;
-                System.out.println(len);
                 if(len < minlen) {
                     minlen = len;
                     st = left;
@@ -44,23 +48,25 @@ class Solution {
             return "";
     }
     
+    public void populate(char[] t) {
+        for(int i = 0; i < t.length; i++) {
+            mapb.put(t[i], mapb.getOrDefault(t[i], 0) + 1);
+        }
+    }
+    
     public boolean doesSatisfy(char[] t, char[] s, int start, int end) {
         
-        
-        Set <Character> set = new HashSet<>();
+        Map <Character, Integer> mapa = new HashMap<>();
         
         for(int i = start; i <= end; i++) {
-            set.add(s[i]);
+            mapa.put(s[i], mapa.getOrDefault(s[i], 0) + 1);
         }
         
-        for(int i = 0; i < t.length; i++) {
-            if(!set.contains(t[i])){
-                set = null;
+        for(char k : mapb.keySet()) {
+            if(!(mapa.containsKey(k) && mapa.get(k) >= mapb.get(k)))
                 return false;
-            }
-                
         }
-        set = null;
+        
         return true;
     }
     
